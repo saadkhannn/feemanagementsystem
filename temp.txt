@@ -1,0 +1,75 @@
+if (request()->ajax() && request()->has('draw')) {
+            return DataTables::of(OnSpecialDuty::with([
+                        'employee'
+                    ])
+                    ->where('status', 0)
+                    ->when(!datatableOrdering(), function($query){
+                        return $query->orderBy('created_at', 'desc');
+                    })
+                )
+                ->addIndexColumn()
+                ->addColumn('employee', function($osd){
+                    return '<a href="'.url('peoples/employees/'.$osd->employee->id).'" target="_blank">'.nameWithUID($osd->employee).'</a>';
+                })
+                ->filterColumn('employee', function($query, $keyword){
+                    return $query->whereHas('employee', function($query) use($keyword){
+                        return $query->where(function($query) use($keyword){
+                            return $query->where('first_name', 'LIKE', '%'.$keyword.'%')
+                                         ->orWhere('middle_name', 'LIKE', '%'.$keyword.'%')
+                                         ->orWhere('last_name', 'LIKE', '%'.$keyword.'%')
+                                         ->orWhere('uid', 'LIKE', '%'.$keyword.'%');
+                        });
+                    });
+                })
+                ->orderColumn('employee', function ($query, $order) {
+                    return pleaseSortMe($query, $order, Employee::select('employees.first_name')
+                        ->whereColumn('employees.id', 'on_special_duties.employee_id')
+                        ->take(1)
+                    );
+                })
+                ->editColumn('from', function($osd){
+                    return date('g:i a', strtotime($osd->from));
+                })
+                ->editColumn('to', function($osd){
+                    return date('g:i a', strtotime($osd->to));
+                })
+                ->addColumn('duration', function($osd){
+                    return timeToHours($osd->twh).' h';
+                })
+                ->addColumn('applied_at', function($osd){
+                    return date('M j, Y g:i a',strtotime($osd->created_at));
+                })
+                ->addColumn('actions', function($osd){
+                    return view('attendance::onSpecialDuties.button', [
+                        'osd' => $osd,
+                        'approve' => true,
+                        'deny' => true,
+                        'delete' => true,
+                    ])->render();
+                })
+                ->rawColumns(['employee', 'actions'])
+                ->toJson();
+        }
+        
+        return view('peoples::remoteAttendances.index', [
+            'title' => "Remote Attendances",
+            'headerColumns' => headerColumns('remote-attendances')
+        ]);
+
+
+        return response()->json([
+                'success' => true,
+                'message' => "Trustee Board Has been Added."
+            ]);
+        }catch(\Throwable $th){
+            DB::rollback();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage()
+            ]);
+        }
+
+        @include('yajra.datatable')
+        @include('layouts.crudFormJs')
+
+        @if(auth()->user()->allPermissions(['settings-objectives-create']))

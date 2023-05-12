@@ -1,0 +1,1 @@
+<img src="{{ asset('img/logo.png') }}" class="brand-image" style="opacity: .8;max-height: 80px;">
