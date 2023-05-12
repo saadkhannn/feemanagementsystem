@@ -1,5 +1,12 @@
 @extends('frontend::layouts.index')
 @section('custom-css')
+<style type="text/css">
+    @media print {
+  .hide-print {
+    display: none;
+  }
+}
+</style>
 @endsection
 @section('main-body')
 @php
@@ -28,11 +35,13 @@
         <div class="row pt-3">
             <div class="col-md-6 mb-2">
                 <h2 class="my-0 mr-md-auto font-weight-normal">
-                    <strong>University of Roehampton</strong>
+                    <strong>Edufee</strong>
                 </h2>
             </div>
             <div class="col-md-6 mb-2">
-                <a class="btn btn-outline-danger" style="float: right" href="{{ route('student.logout') }}">Sign out</a>
+                <a class="btn btn-outline-danger hide-print" style="float: right" href="{{ route('student.logout') }}">Sign out</a>
+
+                 <a class="btn btn-outline-info hide-print" id="downloadbtn" onclick="printpage()" style="float: right; margin-right: 5px;">Download Report</a>
             </div>
             <hr>
         </div>
@@ -44,7 +53,7 @@
                     <tr>
                         <th><strong>Name</strong></th>
                         <th><strong>Email</strong></th>
-                        <th><strong>Username</strong></th>
+                        <th><strong>User ID</strong></th>
                         <th><strong>Gender</strong></th>
                         <th><strong>Department</strong></th>
                         <th style="text-align: center"><strong>Bill</strong></th>
@@ -171,4 +180,14 @@
             </table>
         </div>
     </div>
+@endsection
+@section('custom-js')
+<script>
+function printpage()
+{
+  window.print()
+
+}
+</script>
+
 @endsection

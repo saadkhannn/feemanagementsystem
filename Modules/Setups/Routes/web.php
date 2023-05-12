@@ -27,6 +27,8 @@ Route::prefix('setups')->group(function() {
     Route::resource('my-image', 'MyImageController');
     Route::resource('change-password', 'ChangePasswordController');
 
+    //department & courses
+
     Route::resource('departments', 'DepartmentController');
     Route::resource('courses', 'CourseController');
 });

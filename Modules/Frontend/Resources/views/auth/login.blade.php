@@ -20,8 +20,8 @@
                                 <p class="text-white-50 mb-5">Please enter your login and password!</p>
 
                                 <div class="form-outline form-white mb-4">
-                                    <label class="form-label text-white" for="typeEmailX">Email or Username</label>
-                                    <input type="email" name="email" id="typeEmailX" class="form-control form-control-lg"/>
+                                    <label class="form-label text-white" for="typeEmailX">User ID</label>
+                                    <input type="text" name="username" id="typeEmailX" class="form-control form-control-lg"/>
                                     
                                 </div>
 

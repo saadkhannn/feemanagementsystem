@@ -23,7 +23,7 @@
                     <input type="text" name="last_name" id="last_name" value="{{ $user->last_name }}" class="form-control">
                 </div>
                 <div class="col-md-2">
-                    <label for="username"><strong>User Name <span class="text-danger">*</span></strong></label>
+                    <label for="username"><strong>User ID <span class="text-danger">*</span></strong></label>
                     <input type="text" name="username" id="username" value="{{ $user->username }}" class="form-control">
                 </div>
                 <div class="col-md-2">

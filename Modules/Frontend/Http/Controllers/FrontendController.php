@@ -29,7 +29,7 @@ class FrontendController extends Controller
     public function signin(Request $request)
     {
         $this->validate($request, [
-            'email' => "required",
+            'username' => "required",
             'password' => 'required'
         ]);
 
@@ -37,16 +37,16 @@ class FrontendController extends Controller
             return $this->redirectBackWithSuccess('You Have Already Logged In', 'student.dashboard');
         }
 
-        $user = User::where('email', $request->email)->orWhere('username', $request->email)->first();
+        $user = User::where('username', $request->username)->first();
         if ($user->hasRole('Student')) {
             $check_password = Hash::check($request->password, $user->password);
             if ($check_password) {
                 if ($user->status != 1) {
-                    return $this->backWithError('Sorry! Your Account Is Inactive. Please verify your email or Contact With Administrator To active Account.');
+                    return $this->backWithError('Sorry! Your Account Is Inactive. Please verify your username or Contact With Administrator To active Account.');
                 }
 
                 if (auth()->attempt([
-                    'email' => $request->email,
+                    'username' => $request->username,
                     'password' => $request->password,
                 ])) {
                     return $this->redirectBackWithSuccess('Successfully Signed In', 'student.dashboard');
@@ -55,7 +55,7 @@ class FrontendController extends Controller
                 return $this->backWithError('Sorry! Password Incorrect. Please Try Again!! ');
             }
         } else {
-            return $this->backWithError('Sorry! No account found with this email ');
+            return $this->backWithError('Sorry! No account found with this username ');
         }
 
         return redirect()->back();
