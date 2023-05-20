@@ -17,7 +17,7 @@
                             {!! Form::open(array('route' => 'student.signin','method'=>'POST','class'=>'','id'=>'contactform','files'=>false)) !!}
                             <div class="mb-md-5 mt-md-4 pb-5">
                                 <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
-                                <p class="text-white-50 mb-5">Please enter your login and password!</p>
+                                <p class="text-white-50 mb-5">Please enter your ID and password!</p>
 
                                 <div class="form-outline form-white mb-4">
                                     <label class="form-label text-white" for="typeEmailX">User ID</label>
